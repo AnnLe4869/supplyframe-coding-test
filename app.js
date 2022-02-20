@@ -16,10 +16,8 @@ app.get("/", async (req, res) => {
     }
     
     const data  = await getRankingAnimes(NUMBER_OF_ANIMES_TO_DISPLAY, NUMBER_OF_ANIMES_TO_DISPLAY * page)
-    console.log(data)
     res.render("index.ejs", {
-      name: "hello world",
-      image: "something"
+      animes: data
     });
   } catch (error) {
     console.log(error);
