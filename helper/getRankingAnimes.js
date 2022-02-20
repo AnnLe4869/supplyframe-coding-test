@@ -1,12 +1,14 @@
 import axios from "axios";
 
+import { NUMBER_OF_ANIMES_TO_DISPLAY } from "../constants.js";
+
 /**
  *
  * @param {number} numberOfAnimeDisplayed: number of animes that needed to be fetched
  * @param {number} fromRank: starting from the rank (excluding). For example, fromRank = 10 means start at rank 11
  */
 export default async function getRankingAnimes(
-  numberOfAnimeDisplayed = 10,
+  numberOfAnimeDisplayed = NUMBER_OF_ANIMES_TO_DISPLAY,
   fromRank = 0
 ) {
   const endpoint = `https://api.myanimelist.net/v2/anime/ranking`;
@@ -23,15 +25,15 @@ export default async function getRankingAnimes(
     },
   });
 
-  const formattedData = data.data.map(anime => ({
+  const formattedData = data.data.map((anime) => ({
     animeId: anime.node.id,
     animeTitle: anime.node.title,
     animeRanking: anime.ranking,
     animePictures: {
       medium: anime.node.main_picture.medium,
-      large: anime.node.main_picture.large
-    }
-  }))
+      large: anime.node.main_picture.large,
+    },
+  }));
 
   return formattedData;
 }
