@@ -1,5 +1,6 @@
-const axios = require('axios')
 const { NUMBER_OF_ANIMES_TO_DISPLAY } =  require("../constants.js");
+const { getMultipleAnimes } = require('./getMultipleAnimes.js');
+const { getRankingAnimeIds } = require('./getRankingAnimeIds.js');
 
 /**
  *
@@ -10,61 +11,11 @@ async function getRankingAnimes(
   numberOfAnimeDisplayed = NUMBER_OF_ANIMES_TO_DISPLAY,
   fromRank = 0
 ) {
-  const rankingEndpoint = `https://api.myanimelist.net/v2/anime/ranking`;
-
-  const { data: animeList } = await axios({
-    method: "GET",
-    url: rankingEndpoint,
-    params: {
-      offset: fromRank,
-      ranking_type: "all",
-      limit: numberOfAnimeDisplayed,
-    },
-    headers: {
-      "X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID,
-    },
-  });
-
-  const animeIds = animeList.data.map((anime) => anime.node.id);
-
-  const animeDetails = (
-    await Promise.all(
-      animeIds.map((animeId) =>
-        axios({
-          method: "GET",
-          url: `https://api.myanimelist.net/v2/anime/${animeId}`,
-          params: {
-            fields:
-              "id, title, synopsis, mean, rank, start_season, num_episodes, start_date, end_date, popularity",
-          },
-          headers: {
-            "X-MAL-CLIENT-ID": process.env.MAL_CLIENT_ID,
-          },
-        })
-      )
-    )
-  ).map((data) => data.data);
-  
-  const formattedData = animeDetails.map((anime) => ({
-    id: anime.id,
-    title: anime.title,
-    synopsis: anime.synopsis.substring(0, 600),
-    mean: anime.mean,
-    ranking: anime.rank,
-    numberOfEpisodes: anime.num_episodes,
-    pictures: {
-      medium: anime.main_picture.medium,
-      large: anime.main_picture.large,
-    },
-    startDate: anime.start_data,
-    endDate: anime.end_data,
-    popularity: anime.popularity
-  })).sort((first, second) => first.ranking - second.ranking)
-
-  return formattedData;
+  const ids = await getRankingAnimeIds(numberOfAnimeDisplayed, fromRank)
+  return await getMultipleAnimes(ids)
 }
 
 
 module.exports = {
-  getRankingAnimes
+    getRankingAnimes
 }
