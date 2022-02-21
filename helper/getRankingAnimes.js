@@ -45,9 +45,7 @@ export default async function getRankingAnimes(
       )
     )
   ).map((data) => data.data);
-
-  console.log(animeDetails);
-
+  
   const formattedData = animeDetails.map((anime) => ({
     id: anime.id,
     title: anime.title,

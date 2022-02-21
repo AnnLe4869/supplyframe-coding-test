@@ -1,10 +1,18 @@
 import express from "express";
 import "dotenv/config";
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import getRankingAnimes from "./helper/getRankingAnimes.js";
 import { NUMBER_OF_ANIMES_TO_DISPLAY, STARTING_RANK, TOTAL_NUMBER_OF_ANIMES_EXISTING } from "./constants.js";
 
 const app = express();
 const PORT = 5000;
+
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res) => {
