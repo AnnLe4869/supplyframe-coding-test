@@ -1,5 +1,5 @@
-const axios = require('axios')
-const { NUMBER_OF_ANIMES_TO_DISPLAY } =  require("../constants.js");
+const axios = require("axios");
+const { NUMBER_OF_ANIMES_TO_DISPLAY } = require("../constants.js");
 
 /**
  *
@@ -11,10 +11,7 @@ async function getRankingAnimeIds(
   fromRank = 0
 ) {
   const rankingEndpoint = `https://api.myanimelist.net/v2/anime/ranking`;
-
-  const { data: animeList } = await axios({
-    method: "GET",
-    url: rankingEndpoint,
+  const { data: animeList } = await axios.get(rankingEndpoint, {
     params: {
       offset: fromRank,
       ranking_type: "all",
@@ -28,7 +25,6 @@ async function getRankingAnimeIds(
   return animeList.data.map((anime) => anime.node.id);
 }
 
-
 module.exports = {
-  getRankingAnimeIds
-}
+  getRankingAnimeIds,
+};
