@@ -1,13 +1,12 @@
-import axios from "axios";
-
-import { NUMBER_OF_ANIMES_TO_DISPLAY } from "../constants.js";
+const axios = require('axios')
+const { NUMBER_OF_ANIMES_TO_DISPLAY } =  require("../constants.js");
 
 /**
  *
  * @param {number} numberOfAnimeDisplayed: number of animes that needed to be fetched
  * @param {number} fromRank: starting from the rank (excluding). For example, fromRank = 10 means start at rank 11
  */
-export default async function getRankingAnimes(
+async function getRankingAnimes(
   numberOfAnimeDisplayed = NUMBER_OF_ANIMES_TO_DISPLAY,
   fromRank = 0
 ) {
@@ -63,4 +62,9 @@ export default async function getRankingAnimes(
   })).sort((first, second) => first.ranking - second.ranking)
 
   return formattedData;
+}
+
+
+module.exports = {
+  getRankingAnimes
 }
