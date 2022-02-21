@@ -1,6 +1,6 @@
-const { getAnimeDetail } = require("./getAnimeDetail.js");
+import { getAnimeDetail } from "./getAnimeDetail.js";
 
-async function getMultipleAnimes(ids) {
+export async function getMultipleAnimes(ids) {
   const animeDetails = await Promise.all(ids.map(getAnimeDetail));
   const formattedData = animeDetails
     .map((anime) => ({
@@ -24,6 +24,3 @@ async function getMultipleAnimes(ids) {
 }
 
 
-module.exports = {
-    getMultipleAnimes
-}

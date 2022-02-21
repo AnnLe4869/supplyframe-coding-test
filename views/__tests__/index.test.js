@@ -1,9 +1,9 @@
 import ejs from "ejs";
 import template from "../index.ejs";
-import dummyData from "../testData/dummyData.js";
+import {animes, currentPage, totalPages} from "../testData/dummyData.js";
 
 test("the UI must have a title", async () => {
-  const output = ejs.render(template, dummyData);
+  const output = ejs.render(template, {animes, currentPage, totalPages});
   expect(output).toMatchInlineSnapshot(`
 "<!DOCTYPE html>
 <html lang=\\"en\\">
